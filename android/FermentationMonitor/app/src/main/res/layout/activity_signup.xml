@@ -135,14 +135,15 @@
     <Button
         android:id="@+id/signinButton"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_width="88dp"
+        android:layout_height="39dp"
         android:layout_marginStart="180dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
         android:text="Sign In"
         android:textColor="#AE2020"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.419"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/continueButton" />
 
@@ -151,11 +152,12 @@
         android:layout_width="wrap_content"
         android:layout_height="31dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="Have an Account?"
+        android:textColor="#4A4A4A"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/signinButton"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/continueButton" />
 

@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener continueButtonListener = new View.OnClickListener(){
+    private Button.OnClickListener continueButtonListener = new Button.OnClickListener(){
         @Override
         public void onClick(View view) {
             registerUser();

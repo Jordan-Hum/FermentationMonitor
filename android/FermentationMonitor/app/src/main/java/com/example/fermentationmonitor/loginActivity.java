@@ -22,6 +22,7 @@ public class loginActivity extends AppCompatActivity {
     protected TextView emailInput;
     protected TextView passwordInput;
     protected Button loginButton;
+    protected Button signupButton;
     protected ProgressBar progressBar;
 
     protected FirebaseAuth fAuth;
@@ -55,15 +56,25 @@ public class loginActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.emailloginInput);
         passwordInput = findViewById(R.id.passwordloginInput);
         loginButton = findViewById(R.id.loginButton);
+        signupButton = findViewById(R.id.signupButton);
         progressBar = findViewById(R.id.progressBarLogin);
 
+        signupButton.setOnClickListener(signupButtonListener);
         loginButton.setOnClickListener(loginButtonListener);
     }
 
-    private View.OnClickListener loginButtonListener = new View.OnClickListener(){
+    private Button.OnClickListener loginButtonListener = new Button.OnClickListener(){
         @Override
         public void onClick(View view) {
             loginUser();
+        }
+    };
+
+    private View.OnClickListener signupButtonListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(loginActivity.this, SignupActivity.class);
+            startActivity(intent);
         }
     };
 
