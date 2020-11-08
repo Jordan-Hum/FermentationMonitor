@@ -6,6 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".SignupActivity">
 
+    <EditText
+        android:id="@+id/nameInput"
+        android:layout_width="284dp"
+        android:layout_height="49dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.456"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/nameTitle"
+        android:layout_width="76dp"
+        android:layout_height="20dp"
+        android:text="Name"
+        android:textColor="#AE2020"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signupTitle"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="284dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="324dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/passwordTitle"
+        android:layout_width="105dp"
+        android:layout_height="22dp"
+        android:text="Password"
+        android:textColor="#AE2020"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.189"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailInput"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="285dp"
+        android:layout_height="49dp"
+        android:background="#AE2020"
+        android:text="Continue"
+        android:textColor="#FAFAFA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInput"
+        app:layout_constraintVertical_bias="0.44" />
+
     <TextView
         android:id="@+id/confirmPasswordTitle"
         android:layout_width="182dp"
@@ -18,7 +88,20 @@
         app:layout_constraintHorizontal_bias="0.253"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordInput"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintVertical_bias="0.052" />
+
+    <EditText
+        android:id="@+id/emailInput"
+        android:layout_width="284dp"
+        android:layout_height="49dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.456"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/confirmPasswordInput"
@@ -27,6 +110,7 @@
         android:layout_marginBottom="324dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.456"
@@ -34,19 +118,49 @@
         app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTitle"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/passwordInput"
-        android:layout_width="284dp"
-        android:layout_height="49dp"
-        android:layout_marginBottom="324dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+    <TextView
+        android:id="@+id/emailTitle"
+        android:layout_width="81dp"
+        android:layout_height="22dp"
+        android:text="Email"
+        android:textColor="#AE2020"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTitle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/signupTitle"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <Button
+        android:id="@+id/signinButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="224dp"
+        android:text="Sign In"
+        android:textColor="#AE2020"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/loginText"
+        app:layout_constraintTop_toBottomOf="@+id/continueButton"
+        app:layout_constraintVertical_bias="0.120000005" />
+
+    <TextView
+        android:id="@+id/loginText"
+        android:layout_width="147dp"
+        android:layout_height="31dp"
+        android:text="Have an Account?"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.321"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/continueButton"
+        app:layout_constraintVertical_bias="0.089" />
 
     <TextView
         android:id="@+id/signupTitle"
@@ -62,87 +176,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.08" />
 
-    <TextView
-        android:id="@+id/emailTitle"
-        android:layout_width="76dp"
-        android:layout_height="20dp"
-        android:text="Email"
-        android:textColor="#AE2020"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.172"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupTitle"
-        app:layout_constraintVertical_bias="0.041" />
-
-    <EditText
-        android:id="@+id/emailInput"
-        android:layout_width="284dp"
-        android:layout_height="49dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailTitle"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/passwordTitle"
-        android:layout_width="105dp"
-        android:layout_height="22dp"
-        android:text="Password"
-        android:textColor="#AE2020"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.186"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailInput"
-        app:layout_constraintVertical_bias="0.04" />
-
-    <Button
-        android:id="@+id/continueButton"
-        android:layout_width="285dp"
-        android:layout_height="49dp"
-        android:background="#AE2020"
-        android:text="Continue"
-        android:textColor="#FAFAFA"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInput"
-        app:layout_constraintVertical_bias="0.298" />
-
-    <TextView
-        android:id="@+id/loginText"
-        android:layout_width="147dp"
-        android:layout_height="31dp"
-        android:text="Have an Account?"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.322"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/continueButton"
-        app:layout_constraintVertical_bias="0.053" />
-
-    <Button
-        android:id="@+id/button2"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="75dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="224dp"
-        android:text="Sign In"
-        android:textColor="#AE2020"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/loginText"
-        app:layout_constraintTop_toBottomOf="@+id/continueButton"
-        app:layout_constraintVertical_bias="0.307" />
 </androidx.constraintlayout.widget.ConstraintLayout>

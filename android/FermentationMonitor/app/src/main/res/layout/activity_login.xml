@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".loginActivity">
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="285dp"
+        android:layout_height="49dp"
+        android:background="#AE2020"
+        android:text="Login"
+        android:textColor="#FAFAFA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordloginInput"
+        app:layout_constraintVertical_bias="0.246" />
+
+    <EditText
+        android:id="@+id/emailloginInput"
+        android:layout_width="284dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="500dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailloginTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/passwordloginTitle"
+        android:layout_width="84dp"
+        android:layout_height="32dp"
+        android:text="Password"
+        android:textColor="#AE2020"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.186"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailloginInput"
+        app:layout_constraintVertical_bias="0.06" />
+
+    <EditText
+        android:id="@+id/passwordloginInput"
+        android:layout_width="284dp"
+        android:layout_height="49dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordloginTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/emailloginTitle"
+        android:layout_width="84dp"
+        android:layout_height="32dp"
+        android:text="Email"
+        android:textColor="#AE2020"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.186"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginTitle"
+        app:layout_constraintVertical_bias="0.112" />
+
+    <TextView
+        android:id="@+id/loginTitle"
+        android:layout_width="138dp"
+        android:layout_height="46dp"
+        android:text="Login"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.087" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
