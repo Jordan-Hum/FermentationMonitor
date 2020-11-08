@@ -17,8 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
-
 public class loginActivity extends AppCompatActivity {
 
     protected TextView emailInput;
@@ -33,7 +31,23 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         fAuth = FirebaseAuth.getInstance();
+        isLogin();
         setupUI();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    //Check if the user is already logged into an account
+    private void isLogin() {
+        if(fAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(loginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     protected void setupUI() {
@@ -41,8 +55,7 @@ public class loginActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.emailloginInput);
         passwordInput = findViewById(R.id.passwordloginInput);
         loginButton = findViewById(R.id.loginButton);
-        progressBar = findViewById(R.id.progressBarSignup);
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar = findViewById(R.id.progressBarLogin);
 
         loginButton.setOnClickListener(loginButtonListener);
     }

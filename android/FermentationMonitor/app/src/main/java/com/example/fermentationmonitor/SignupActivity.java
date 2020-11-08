@@ -37,6 +37,12 @@ public class SignupActivity extends AppCompatActivity {
         setupUI();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
     //Check if the user is already logged into an account
     private void isLogin() {
         if(fAuth.getCurrentUser() != null) {
@@ -55,7 +61,6 @@ public class SignupActivity extends AppCompatActivity {
         continueButton = findViewById(R.id.continueButton);
         loginButton = findViewById(R.id.signinButton);
         progressBar = findViewById(R.id.progressBarSignup);
-        progressBar.setVisibility(View.INVISIBLE);
 
         loginButton.setOnClickListener(signinButtonListener);
         continueButton.setOnClickListener(continueButtonListener);
