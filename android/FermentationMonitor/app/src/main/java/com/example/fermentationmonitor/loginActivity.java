@@ -1,23 +1,28 @@
 package com.example.fermentationmonitor;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
 public class loginActivity extends AppCompatActivity {
 
-    protected TextView emailloginInput;
-    protected TextView passwordloginInput;
+    protected TextView emailInput;
+    protected TextView passwordInput;
     protected Button loginButton;
     protected ProgressBar progressBar;
 
@@ -33,8 +38,8 @@ public class loginActivity extends AppCompatActivity {
 
     protected void setupUI() {
         getSupportActionBar().setTitle("");
-        emailloginInput = findViewById(R.id.emailloginInput);
-        passwordloginInput = findViewById(R.id.passwordloginInput);
+        emailInput = findViewById(R.id.emailloginInput);
+        passwordInput = findViewById(R.id.passwordloginInput);
         loginButton = findViewById(R.id.loginButton);
         progressBar = findViewById(R.id.progressBarSignup);
         progressBar.setVisibility(View.INVISIBLE);
@@ -45,24 +50,44 @@ public class loginActivity extends AppCompatActivity {
     private View.OnClickListener loginButtonListener = new View.OnClickListener(){
         @Override
         public void onClick(View view) {
-
-            if(profileExists(emailloginInput.getText().toString(), passwordloginInput.getText().toString())){
-                Intent intent = new Intent(loginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }else{
-                Toast.makeText(loginActivity.this,"Account does not exist, try again", Toast.LENGTH_SHORT).show();
-            }
+            loginUser();
         }
     };
 
-    private boolean profileExists(String name, String password){
-        //check if the username and password match
-        if(/*profile exists*/ true){  //DELETE change this to have it working and not always true
-            return true;
+    private void loginUser(){
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString().trim();
+
+        //Validate User
+        if(TextUtils.isEmpty(email)) {
+            emailInput.setError("Email is required");
+            return;
         }
-        else{
-            return false;
+        if(TextUtils.isEmpty(password)) {
+            passwordInput.setError("Password is required");
+            return;
         }
+        if(password.length() < 6) {
+            passwordInput.setError("Password must be at least 6 characters");
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        //Authenticate User
+        fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(loginActivity.this, "Logged in Successfully" , Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(loginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(loginActivity.this, "Error: " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
 }

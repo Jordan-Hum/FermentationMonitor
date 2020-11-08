@@ -106,6 +106,7 @@ public class SignupActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Toast.makeText(SignupActivity.this, "Error: " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         });
