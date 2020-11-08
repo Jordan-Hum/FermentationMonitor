@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
     //Variables
     protected TextView textView;
@@ -36,4 +38,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    //**TO LOGOUT**
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(MainActivity.this, loginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
