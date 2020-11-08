@@ -6,6 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".SignupActivity">
 
+    <TextView
+        android:id="@+id/confirmPasswordTitle"
+        android:layout_width="182dp"
+        android:layout_height="28dp"
+        android:text="Confirm Password"
+        android:textColor="#AE2020"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.253"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInput"
+        app:layout_constraintVertical_bias="0.057" />
+
+    <EditText
+        android:id="@+id/confirmPasswordInput"
+        android:layout_width="284dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="324dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.456"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
     <EditText
         android:id="@+id/passwordInput"
         android:layout_width="284dp"
@@ -84,10 +112,10 @@
         android:textColor="#FAFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordInput"
-        app:layout_constraintVertical_bias="0.073" />
+        app:layout_constraintVertical_bias="0.298" />
 
     <TextView
         android:id="@+id/loginText"
@@ -108,11 +136,13 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="75dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="316dp"
+        android:layout_marginBottom="224dp"
         android:text="Sign In"
         android:textColor="#AE2020"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/loginText" />
+        app:layout_constraintStart_toEndOf="@+id/loginText"
+        app:layout_constraintTop_toBottomOf="@+id/continueButton"
+        app:layout_constraintVertical_bias="0.307" />
 </androidx.constraintlayout.widget.ConstraintLayout>
