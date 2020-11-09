@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Button.OnClickListener onClickSaveButton = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, ViewDataActivity.class);
+            Intent intent = new Intent(MainActivity.this, CurrentBrewActivity.class);
             startActivity(intent);
         }
     };
