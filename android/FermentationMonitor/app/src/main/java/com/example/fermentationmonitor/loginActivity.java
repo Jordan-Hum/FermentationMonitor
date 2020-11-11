@@ -45,7 +45,7 @@ public class loginActivity extends AppCompatActivity {
     //Check if the user is already logged into an account
     private void isLogin() {
         if(fAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(loginActivity.this, MainActivity.class);
+            Intent intent = new Intent(loginActivity.this, PastBrewsActivity.class);
             startActivity(intent);
             finish();
         }
@@ -104,7 +104,7 @@ public class loginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     Toast.makeText(loginActivity.this, "Logged in Successfully" , Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(loginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(loginActivity.this, PastBrewsActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(loginActivity.this, "Error: " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();

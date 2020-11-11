@@ -40,7 +40,7 @@ public class BrewDataListAdapter extends ArrayAdapter<BrewData> {
         date.setText(data.getDate());
         time.setText(data.getTime());
         density.setText(data.getDensity());
-        temperature.setText(data.getTemperature());
+        temperature.setText(data.getTemperature()+"°C");
 
         return convertView;
     }

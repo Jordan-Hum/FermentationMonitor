@@ -54,7 +54,7 @@ public class SignupActivity extends AppCompatActivity {
     //Check if the user is already logged into an account
     private void isLogin() {
         if(fAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+            Intent intent = new Intent(SignupActivity.this, PastBrewsActivity.class);
             startActivity(intent);
             finish();
         }
@@ -137,7 +137,7 @@ public class SignupActivity extends AppCompatActivity {
                     });
 
                     //Send to Main Activity
-                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignupActivity.this, PastBrewsActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(SignupActivity.this, "Error: " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
