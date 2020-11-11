@@ -85,7 +85,12 @@ public class SignupActivity extends AppCompatActivity {
     private Button.OnClickListener continueButtonListener = new Button.OnClickListener(){
         @Override
         public void onClick(View view) {
-            registerUser();
+            if(passwordInput.getText().toString().trim().equals(confirmpasswordInput.getText().toString().trim())) {
+                registerUser();
+            }else{
+                passwordInput.setError("Passwords do not match");
+                confirmpasswordInput.setError("Passwords do not match");
+            }
         }
     };
 
