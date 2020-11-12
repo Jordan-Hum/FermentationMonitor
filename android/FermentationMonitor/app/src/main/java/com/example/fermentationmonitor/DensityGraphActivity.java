@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Color;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -23,68 +22,54 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class DensityGraphActivity extends AppCompatActivity {
+    protected BarChart barChart;
+    protected BarData barData;
+    protected BarDataSet barDataSet;
+
+    protected List<BarEntry> barEntries = new ArrayList<>();
+    protected String batchID;
 
     private FirebaseDatabase db;
     private DatabaseReference dbRef;
 
-    BarChart barChart;
-    BarData barData;
-    BarDataSet barDataSet;
-    ArrayList  barEntries = new ArrayList <>(2);
-    String batchID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_density_graph);
+        setupUI();
+        db = FirebaseDatabase.getInstance();
+        dbRef = db.getReference("SensorData/" + batchID + "/brewData");
+    }
+
+    private void setupUI() {
+        getSupportActionBar().setTitle("Graph");
 
         Intent intent = getIntent();
         batchID = intent.getStringExtra("batchId");
-        db = FirebaseDatabase.getInstance();
-        dbRef = db.getReference("SensorData/" + batchID + "/brewData");
 
         barChart = findViewById(R.id.BarChart);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         loadData();
-        Log.d("console", String.valueOf(barEntries));
-
-        barDataSet = new BarDataSet(barEntries, "Density");
-        barData = new BarData(barDataSet);
-        barChart.setData(barData);
-
-        barDataSet.setColors(ColorTemplate.rgb("800000"));
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(15f);
-
-        barChart.animateXY(2000,2000);
-
     }
-
-
-    private void getEntries() {
-        barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1f, 1));
-        barEntries.add(new BarEntry(2f, 2));
-        barEntries.add(new BarEntry(3f, 3));
-        barEntries.add(new BarEntry(4f, 4));
-        barEntries.add(new BarEntry(5f, 5));
-        barEntries.add(new BarEntry(6f, 6));
-    }
-
 
     private void loadData() {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-                    int x = 1;
+                    float x = 0;
                     barEntries.clear();
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         float sg = Float.valueOf(dataSnapshot.child("specificGravity").getValue().toString());
-                        barEntries.add(new BarEntry(Float.valueOf(x), sg));
+                        barEntries.add(new BarEntry(x, sg));
                         x++;
                     }
-                    Log.d("abc", String.valueOf(barEntries));
+                    generateGraph();
                 }
             }
 
@@ -95,4 +80,18 @@ public class DensityGraphActivity extends AppCompatActivity {
         });
     }
 
+    //Everything related to the graph goes here
+    // Creating the graph
+    // Customizing the graph
+    private void generateGraph() {
+        barDataSet = new BarDataSet(barEntries, "Specific Gravity");
+        barData = new BarData(barDataSet);
+        barChart.setData(barData);
+
+        barDataSet.setColors(ColorTemplate.rgb("800000"));
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(15f);
+
+        barChart.animateXY(2000,2000);
+    }
 }
