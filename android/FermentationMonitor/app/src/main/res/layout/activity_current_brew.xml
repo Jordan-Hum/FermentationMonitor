@@ -34,7 +34,6 @@
             android:layout_height="wrap_content"
             android:paddingStart="12dp"
             android:paddingBottom="10dp"
-            android:text="Yeast Type: "
             android:textSize="18sp" />
 
         <LinearLayout

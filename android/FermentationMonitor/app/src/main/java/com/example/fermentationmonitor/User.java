@@ -5,9 +5,7 @@ public class User {
     private String name;
     private String email;
 
-    public User() {
-
-    }
+    public User() {}
 
     public User(String id, String name, String email) {
         this.id = id;

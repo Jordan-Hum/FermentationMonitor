@@ -12,13 +12,13 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class BrewDataListAdapter extends ArrayAdapter<BrewData> {
+public class BatchListAdapter extends ArrayAdapter<Batch> {
     //Variables
     private Context context;
     private int resource;
 
     //Constructor
-    public BrewDataListAdapter(@NonNull Context context, int resource, @NonNull List<BrewData> objects) {
+    public BatchListAdapter(@NonNull Context context, int resource, @NonNull List<Batch> objects) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
@@ -30,17 +30,17 @@ public class BrewDataListAdapter extends ArrayAdapter<BrewData> {
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource, parent, false);
 
-        BrewData data = getItem(position);
+        Batch data = getItem(position);
 
-        TextView date = convertView.findViewById(R.id.currentList_date);
-        TextView time = convertView.findViewById(R.id.currentList_time);
-        TextView density = convertView.findViewById(R.id.currentList_density);
-        TextView temperature = convertView.findViewById(R.id.currentList_temp);
+        TextView name = convertView.findViewById(R.id.pastList_batch_name);
+        TextView startDate = convertView.findViewById(R.id.pastList_start_date);
+        TextView endDate = convertView.findViewById(R.id.pastList_end_date);
+        TextView yeastType = convertView.findViewById(R.id.pastList_yeast_type);
 
-        date.setText(data.getDate());
-        time.setText(data.getTime());
-        density.setText(String.valueOf(data.getSpecificGravity()));
-        temperature.setText(data.getTempOfLiquid()+"°C");
+        name.setText(data.getBatchName());
+        startDate.setText(data.getStartDate());
+        endDate.setText(data.getEndDate());
+        yeastType.setText(data.getYeastType());
 
         return convertView;
     }
