@@ -10,16 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DataList extends ArrayAdapter<FermentationData> {
+public class BatchListAdapter extends ArrayAdapter<Batch> {
     //Variables
     private Context context;
     private int resource;
 
     //Constructor
-    public DataList(@NonNull Context context, int resource, @NonNull List<FermentationData> objects) {
+    public BatchListAdapter(@NonNull Context context, int resource, @NonNull List<Batch> objects) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
@@ -31,15 +30,17 @@ public class DataList extends ArrayAdapter<FermentationData> {
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource, parent, false);
 
-        FermentationData data = getItem(position);
+        Batch data = getItem(position);
 
-        TextView alcoholLevel = convertView.findViewById(R.id.alcohol_level);
-        TextView density = convertView.findViewById(R.id.density);
-        TextView temperature = convertView.findViewById(R.id.temperature);
+        TextView name = convertView.findViewById(R.id.pastList_batch_name);
+        TextView startDate = convertView.findViewById(R.id.pastList_start_date);
+        TextView endDate = convertView.findViewById(R.id.pastList_end_date);
+        TextView yeastType = convertView.findViewById(R.id.pastList_yeast_type);
 
-        alcoholLevel.setText("Alcohol Level: " + data.getAlcoholLevel() + "%");
-        density.setText("Density: " + data.getDensity());
-        temperature.setText("Temperature: " + data.getTemperature());
+        name.setText(data.getBatchName());
+        startDate.setText(data.getStartDate());
+        endDate.setText(data.getEndDate());
+        yeastType.setText(data.getYeastType());
 
         return convertView;
     }

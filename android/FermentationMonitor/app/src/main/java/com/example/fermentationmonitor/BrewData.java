@@ -3,16 +3,16 @@ package com.example.fermentationmonitor;
 public class BrewData {
     private String date;
     private String time;
-    private String density;
-    private String temperature;
+    private double specificGravity;
+    private double tempOfLiquid;
 
     public BrewData() {}
 
-    public BrewData(String date, String time, String density, String temperature) {
+    public BrewData(String date, String time, double specificGravity, double tempOfLiquid) {
         this.date = date;
         this.time = time;
-        this.density = density;
-        this.temperature = temperature;
+        this.specificGravity = specificGravity;
+        this.tempOfLiquid = tempOfLiquid;
     }
 
     public String getDate() {
@@ -31,19 +31,19 @@ public class BrewData {
         this.time = time;
     }
 
-    public String getDensity() {
-        return density;
+    public double getSpecificGravity() {
+        return specificGravity;
     }
 
-    public void setDensity(String density) {
-        this.density = density;
+    public void setSpecificGravity(double specificGravity) {
+        this.specificGravity = specificGravity;
     }
 
-    public String getTemperature() {
-        return temperature;
+    public double getTempOfLiquid() {
+        return tempOfLiquid;
     }
 
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
+    public void setTempOfLiquid(double tempOfLiquid) {
+        this.tempOfLiquid = tempOfLiquid;
     }
 }
