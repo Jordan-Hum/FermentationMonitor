@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,7 +36,9 @@ public class PastBrewsActivity extends AppCompatActivity {
     protected FloatingActionButton addButton;
 
     protected List<Batch> batchList = new ArrayList<>();
+    protected String userID;
 
+    private FirebaseAuth fAuth;
     private FirebaseDatabase db;
     private DatabaseReference dbRef;
 
@@ -45,6 +46,8 @@ public class PastBrewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_brews);
+        fAuth = FirebaseAuth.getInstance();
+        userID = fAuth.getCurrentUser().getUid();
         db = FirebaseDatabase.getInstance();
         dbRef = db.getReference("SensorData");
         setupUI();
