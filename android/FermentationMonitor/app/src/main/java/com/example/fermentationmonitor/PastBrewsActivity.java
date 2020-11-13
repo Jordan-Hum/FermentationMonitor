@@ -109,7 +109,8 @@ public class PastBrewsActivity extends AppCompatActivity {
     private FloatingActionButton.OnClickListener onClickaddButton = new FloatingActionButton.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(PastBrewsActivity.this, "Click!" , Toast.LENGTH_SHORT).show();
+            dialogActivity dialog = new dialogActivity();
+            dialog.show(getSupportFragmentManager(), "addBrewDialog");
         }
     };
 
