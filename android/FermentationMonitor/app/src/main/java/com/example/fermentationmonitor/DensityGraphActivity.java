@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.graphics.Color;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,11 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DensityGraphActivity extends AppCompatActivity {
-    protected BarChart barChart;
-    protected BarData barData;
-    protected BarDataSet barDataSet;
+    protected LineChart lineChart;
+    protected LineData lineData;
+    protected LineDataSet lineDataSet;
 
-    protected List<BarEntry> barEntries = new ArrayList<>();
+    protected List<Entry> lineEntries = new ArrayList<>();
     protected String batchID;
 
     private FirebaseDatabase db;
@@ -48,7 +48,7 @@ public class DensityGraphActivity extends AppCompatActivity {
         Intent intent = getIntent();
         batchID = intent.getStringExtra("batchId");
 
-        barChart = findViewById(R.id.BarChart);
+        lineChart = findViewById(R.id.lineChart);
     }
 
     @Override
@@ -63,10 +63,10 @@ public class DensityGraphActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     float x = 0;
-                    barEntries.clear();
+                    lineEntries.clear();
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         float sg = Float.valueOf(dataSnapshot.child("specificGravity").getValue().toString());
-                        barEntries.add(new BarEntry(x, sg));
+                        lineEntries.add(new Entry(x, sg));
                         x++;
                     }
                     generateGraph();
@@ -84,14 +84,15 @@ public class DensityGraphActivity extends AppCompatActivity {
     // Creating the graph
     // Customizing the graph
     private void generateGraph() {
-        barDataSet = new BarDataSet(barEntries, "Specific Gravity");
-        barData = new BarData(barDataSet);
-        barChart.setData(barData);
+        lineDataSet = new LineDataSet(lineEntries, "Specific Gravity");
+        lineData = new LineData(lineDataSet);
+        lineChart.setData(lineData);
 
-        barDataSet.setColors(ColorTemplate.rgb("800000"));
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(15f);
+        lineDataSet.setColors(ColorTemplate.rgb("800000"));
+        lineDataSet.setValueTextColor(Color.BLACK);
+        lineDataSet.setValueTextSize(15f);
 
-        barChart.animateXY(2000,2000);
+        lineChart.animateXY(2000,2000);
+
     }
 }
