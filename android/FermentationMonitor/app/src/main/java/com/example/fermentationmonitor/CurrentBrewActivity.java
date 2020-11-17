@@ -87,6 +87,7 @@ public class CurrentBrewActivity extends AppCompatActivity {
             Intent intent = new Intent(CurrentBrewActivity.this, DensityGraphActivity.class);
             intent.putExtra("batchId", batchID);
             startActivity(intent);
+            finish(); //Needs to be deleted
         }
     };
 

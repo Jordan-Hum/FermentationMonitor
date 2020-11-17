@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -53,21 +55,24 @@ public class dialogActivity extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-
                 String brewTitle = brewTitleInput.getText().toString().trim();
                 String yeastType = yeastTypeInput.getText().toString().trim();
 
+                //***Needs to be fixed***
+                if(TextUtils.isEmpty(brewTitle)) {
+                    brewTitleInput.setError("Batch name is required");
+                    return;
+                }
+                if(TextUtils.isEmpty(yeastType)) {
+                    yeastTypeInput.setError("Yeast Type is required");
+                    return;
+                }
+
                 Batch batch = new Batch(brewTitle, "13/11/2020", "", userID, yeastType);
-
-
                 dbRef.push().setValue(batch);
-
             }
 
         });
-
-
         return builder.create();
     }
-
 }
