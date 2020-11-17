@@ -84,7 +84,9 @@ public class CurrentBrewActivity extends AppCompatActivity {
     private Button.OnClickListener onClickGraphButton = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(CurrentBrewActivity.this, "Click!" , Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CurrentBrewActivity.this, DensityGraphActivity.class);
+            intent.putExtra("batchId", batchID);
+            startActivity(intent);
         }
     };
 
