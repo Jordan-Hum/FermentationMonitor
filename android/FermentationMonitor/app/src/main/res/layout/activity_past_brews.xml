@@ -79,7 +79,7 @@
         <ListView
             android:id="@+id/past_list"
             android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             android:layout_gravity="center" />
     </LinearLayout>
 
