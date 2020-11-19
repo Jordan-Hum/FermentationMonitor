@@ -12,9 +12,15 @@
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
 #include "esp8266_secrets.h"
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 const String USER_ID = "sampleUserId";
+const long utcOffsetInSeconds = -18000;
 
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
 FirebaseData firebaseData;
 
@@ -25,6 +31,7 @@ void sendRequest();
 void sendData(DynamicJsonDocument);
 
 void setup() {
+  timeClient.begin();
   Serial.begin(9600);
   delay(100);
 
@@ -91,14 +98,20 @@ void sendData(DynamicJsonDocument res){
   String userPath = "/Users/" + USER_ID;
   String batchId;
   FirebaseJson json1;
+
+  timeClient.update();
+  String FormattedDate = timeClient.getFormattedDate();
   
   float sg = res["specificGravity"];
   float temp = res["tempOfLiquid"];
+  int splitT = FormattedDate.indexOf("T");
+  String dayStamp = FormattedDate.substring(0, splitT);
+  String timeStamp = FormattedDate.substring(splitT+1, FormattedDate.length()-1);
 
    json1.set("specificGravity", String(sg));
    json1.set("tempOfLiquid", String(temp));
-   json1.set("time", "13:00");
-   json1.set("date", "01/01/2020");
+   json1.set("time", timeStamp);
+   json1.set("date", dayStamp);
   
 
   //Get BatchID for userPath
