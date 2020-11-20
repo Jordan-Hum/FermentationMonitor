@@ -3,6 +3,7 @@ package com.example.fermentationmonitor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class CurrentBrewActivity extends AppCompatActivity {
     protected TextView temp;
     protected ListView listView;
     protected Button graphButton;
+    private Toolbar toolbar;
 
     protected List<BrewData> brewDataList = new ArrayList<>();
     protected String userID;
@@ -61,7 +63,10 @@ public class CurrentBrewActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
-        getSupportActionBar().setTitle("Current Brew");
+        toolbar = findViewById(R.id.myToolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Current Brew");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         batchID = intent.getStringExtra("batchId");

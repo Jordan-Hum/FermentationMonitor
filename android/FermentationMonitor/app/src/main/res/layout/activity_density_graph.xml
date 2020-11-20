@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".DensityGraphActivity">
 
+    <include layout="@layout/appbar"/>
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"

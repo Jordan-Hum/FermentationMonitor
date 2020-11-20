@@ -2,6 +2,7 @@ package com.example.fermentationmonitor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class DensityGraphActivity extends AppCompatActivity {
     protected LineChart lineChart;
     protected LineData lineData;
     protected LineDataSet lineDataSet;
+    private Toolbar toolbar;
 
     protected List<Entry> lineEntries = new ArrayList<>();
     protected String batchID;
@@ -43,7 +45,10 @@ public class DensityGraphActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
-        getSupportActionBar().setTitle("Graph");
+        toolbar = findViewById(R.id.myToolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Graph");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         batchID = intent.getStringExtra("batchId");
