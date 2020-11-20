@@ -1,7 +1,10 @@
 package com.example.fermentationmonitor;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PastBrewsActivity extends AppCompatActivity {
+public class PastBrewsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //Variables
     protected TextView title;
     protected TextView batchName;
@@ -42,6 +46,10 @@ public class PastBrewsActivity extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference dbRef;
 
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +59,15 @@ public class PastBrewsActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance();
         dbRef = db.getReference("SensorData");
         setupUI();
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.drawer_open, R.string.drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     //Initialize the UI
     private void setupUI() {
-        getSupportActionBar().setTitle("Past Brews");
-        title = findViewById(R.id.past_title);
-        title.setText("Past Brews");
         batchName = findViewById(R.id.past_batch_name);
         startDate = findViewById(R.id.past_start_date);
         endDate = findViewById(R.id.past_end_date);
@@ -65,6 +75,11 @@ public class PastBrewsActivity extends AppCompatActivity {
         listView = findViewById(R.id.past_list);
         addButton = findViewById(R.id.past_addButton);
         addButton.setOnClickListener(onClickaddButton);
+        drawer = findViewById(R.id.drawer);
+        navigationView = findViewById(R.id.navigation_drawer);
+        toolbar = findViewById(R.id.myToolbar);
+
+        navigationView.setNavigationItemSelectedListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,31 +129,26 @@ public class PastBrewsActivity extends AppCompatActivity {
         }
     };
 
-    //Creates the menu at the top right of the screen
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.past_brews_activity_menu, menu);
-        return true;
-    }
-
-    //Listener to select menu item
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.past_brews_activity_logout:
-                logout();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     //Logout User
     private void logout() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(PastBrewsActivity.this, loginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile_settings:
+                Intent profileActivity = new Intent(this, ProfileSettingsActivity.class);
+                startActivity(profileActivity);
+                return true;
+            case R.id.past_brews_activity_logout:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
