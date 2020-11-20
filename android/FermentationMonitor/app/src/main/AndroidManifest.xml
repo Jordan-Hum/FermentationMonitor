@@ -13,7 +13,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".DensityGraphActivity"
                   android:parentActivityName=".CurrentBrewActivity"></activity>
-        <activity android:name=".DensityGraph" />
         <activity
             android:name=".CurrentBrewActivity"
             android:parentActivityName=".PastBrewsActivity" />
@@ -26,6 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ProfileSettingsActivity"
+                  android:parentActivityName=".PastBrewsActivity"></activity>
     </application>
 
 </manifest>
