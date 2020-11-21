@@ -9,16 +9,29 @@
 #include <FirebaseESP8266HTTPClient.h>
 #include <FirebaseFS.h>
 #include <FirebaseJson.h>
+#include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
 #include "esp8266_secrets.h"
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 const String USER_ID = "sampleUserId";
+const long utcOffsetInSeconds = -18000;
+
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
 FirebaseData firebaseData;
 
-void sendData();
+boolean messageReady = false;
+String message = "";
+
+void sendRequest();
+void sendData(DynamicJsonDocument);
 
 void setup() {
+  timeClient.begin();
   Serial.begin(9600);
   delay(100);
 
@@ -49,50 +62,62 @@ void setup() {
   Serial.println("Connecting to Firebase");
   //Set data to firebase here
   Firebase.begin(FIREBASE_HOST,FIREBASE_AUTH);
-
-  Serial.println("Sending Data");
-  sendData();
   
+  Serial.println("");
 }
-
-
-int value = 0;
 
 void loop(){
-
+	sendRequest();
 }
 
-void sendData(){
+void sendRequest(){
+  DynamicJsonDocument doc(1024);
+  
+  while(messageReady == false) { // busy spin until response is received 
+    if(Serial.available()) {
+      message = Serial.readString();
+      messageReady = true;
+    }
+  }
+  // Attempt to deserialize the JSON-formatted message
+  DeserializationError error = deserializeJson(doc,message);
+  if(error) {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.c_str());
+    return;
+  }
+
+  if(doc["type"] == "response"){ 
+    sendData(doc);
+    messageReady = false;
+  }
+}
+
+void sendData(DynamicJsonDocument res){
   
   String userPath = "/Users/" + USER_ID;
   String batchId;
   FirebaseJson json1;
 
-   json1.set("specificGravity", 1.001);
-   json1.set("tempOfLiquid", 23.0);
-   json1.set("time", "13:00");
-   json1.set("date", "01/01/2020");
+  timeClient.update();
+  String FormattedDate = timeClient.getFormattedDate();
+  
+  float sg = res["specificGravity"];
+  float temp = res["tempOfLiquid"];
+  int splitT = FormattedDate.indexOf("T");
+  String dayStamp = FormattedDate.substring(0, splitT);
+  String timeStamp = FormattedDate.substring(splitT+1, FormattedDate.length()-1);
 
-  /*  
-  brewData.set("specificGravity", 1.001);
-  brewData.set("tempOfLiquid", 20.3);
-  brewData.set("time", "13:00");
-  brewData.set("date", "01/02/2020");
-  */
+   json1.set("specificGravity", String(sg));
+   json1.set("tempOfLiquid", String(temp));
+   json1.set("time", timeStamp);
+   json1.set("date", dayStamp);
   
 
-  //Also can use Firebase.get instead of Firebase.setInt
+  //Get BatchID for userPath
   if (Firebase.getString(firebaseData,userPath+"/currentBatchId"))
   {
-      Serial.println("PASSED");
-      Serial.println("PATH: " + firebaseData.dataPath());
-      Serial.println("TYPE: " + firebaseData.dataType());
-      Serial.println("ETag: " + firebaseData.ETag());
-      Serial.print("VALUE: ");
       batchId = firebaseData.stringData();
-      Serial.println(batchId);
-      Serial.println("------------------------------------");
-      Serial.println();
     }
     else
     {
@@ -105,16 +130,10 @@ void sendData(){
 
   String dataPath = "/SensorData/"+batchId+"/brewData";
 
+  //Place brewData in the Correct Batch
   if (Firebase.pushJSON(firebaseData, dataPath, json1))
   {
-      Serial.println("PASSED");
-      Serial.println("PATH: " + firebaseData.dataPath());
-      Serial.println("TYPE: " + firebaseData.dataType());
-      Serial.println("ETag: " + firebaseData.ETag());
-      Serial.print("VALUE: ");
       //Firebase.printResult(firebaseData);
-      Serial.println("------------------------------------");
-      Serial.println();
   }
   else{
       Serial.println("FAILED");

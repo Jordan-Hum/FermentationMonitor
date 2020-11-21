@@ -1,5 +1,11 @@
+
 #include <Wire.h>
 #include <Adafruit_MLX90614.h>
+#include <ArduinoJson.h>
+
+String message = "";
+bool messageReady = false;
+const int timeUntilNextReading = 30000;
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
@@ -8,46 +14,45 @@ float distance[1];
 const int AVERAGE_OF =50;
 const float MCU_VOLTAGE = 5.0;
 float initial = 0;
+
 float convertData(float);
-float delta;
+void sendBrewData();
+float readDistance(float);
+
 
 void setup(){
   Serial.begin(9600); 
- mlx.begin(); 
- 
+  mlx.begin(); 
 }
 
 void loop(){
-  float temperatureValue;
+   sendBrewData();
+   delay(timeUntilNextReading);
+}
+
+void sendBrewData(){
+  float temperatureValue = mlx.readObjectTempC();
   float delta ;
-  temperatureValue = mlx.readObjectTempC();
+  DynamicJsonDocument doc(1024);
   
   if(initial == 0){
     initial = readDistance(0);
     delta = initial;
-  }
-  else {
-    delta = initial - readDistance(0);
-    initial -= delta;
     }
-   readDistance(0);//read sensor 1
-
-  Serial.print("\nDistance =");//print out the value you read
-  Serial.print(distance[0]);
-  Serial.println("cm");
-
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC());                         //Celsius
-  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C"); //Celsius
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF());                         //Fahrenheit
-  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F"); //Fahrenheit
-
-  String data = String(convertData(delta)) +" SG " + "," + String(temperatureValue) + "*C";
-  Serial.print("Data ");Serial.print(data);
-  Serial.println();
-  
-  delay(5000);
+   else {
+        delta = initial - readDistance(0);
+        initial -= delta;
+    }
+    
+    doc["type"] = "response";
+    // Get data from analog sensors
+    doc["specificGravity"] = convertData(delta);
+    doc["tempOfLiquid"] = temperatureValue;
+    serializeJson(doc,Serial);
+    
 }
-float readDistance(int sensor){ //readDistance
+
+float readDistance(int sensor){ //Read Distance
       float voltage_temp_average=0;   
       for(int i=0; i < AVERAGE_OF; i++)
     {
@@ -66,6 +71,5 @@ float readDistance(int sensor){ //readDistance
 float convertData(float delta){ // convert delta to SG
    float sg_value;
    sg_value = 0.01*delta + 1;
-    
    return sg_value;
-    }
+}
