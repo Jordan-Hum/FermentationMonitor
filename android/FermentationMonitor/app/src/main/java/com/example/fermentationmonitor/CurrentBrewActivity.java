@@ -2,8 +2,10 @@ package com.example.fermentationmonitor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +41,7 @@ public class CurrentBrewActivity extends AppCompatActivity {
     protected TextView temp;
     protected ListView listView;
     protected Button graphButton;
+    protected FloatingActionButton deleteButton;
 
     protected List<BrewData> brewDataList = new ArrayList<>();
     protected String userID;
@@ -79,6 +83,8 @@ public class CurrentBrewActivity extends AppCompatActivity {
         listView = findViewById(R.id.current_list);
         graphButton = findViewById(R.id.current_graphButton);
         graphButton.setOnClickListener(onClickGraphButton);
+        deleteButton = findViewById(R.id.current_deleteButton);
+        deleteButton.setOnClickListener(onClickDeleteButton);
     }
 
     private Button.OnClickListener onClickGraphButton = new Button.OnClickListener() {
@@ -87,7 +93,31 @@ public class CurrentBrewActivity extends AppCompatActivity {
             Intent intent = new Intent(CurrentBrewActivity.this, DensityGraphActivity.class);
             intent.putExtra("batchId", batchID);
             startActivity(intent);
-            finish(); //Needs to be deleted
+        }
+    };
+
+    private Button.OnClickListener onClickDeleteButton = new Button.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder((CurrentBrewActivity.this));
+            builder.setMessage("Are you sure want to delete batch: " + batchName + "?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DatabaseReference delRef = db.getReference("SensorData/" + batchID);
+                            delRef.removeValue();
+
+                            Toast.makeText(CurrentBrewActivity.this, "Batch Deleted" , Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CurrentBrewActivity.this, PastBrewsActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
         }
     };
 

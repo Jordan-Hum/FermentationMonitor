@@ -107,7 +107,19 @@
         android:textColor="#FAFAFA"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.321"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/current_deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:clickable="true"
+        app:layout_constraintStart_toEndOf="@+id/current_graphButton"
+        app:layout_constraintTop_toTopOf="@+id/current_graphButton"
+        app:maxImageSize="35dp"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
