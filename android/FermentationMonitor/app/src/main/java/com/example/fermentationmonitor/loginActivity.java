@@ -2,6 +2,7 @@ package com.example.fermentationmonitor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class loginActivity extends AppCompatActivity {
     protected Button loginButton;
     protected Button signupButton;
     protected ProgressBar progressBar;
+    private Toolbar toolbar;
 
     protected FirebaseAuth fAuth;
 
@@ -52,7 +54,9 @@ public class loginActivity extends AppCompatActivity {
     }
 
     protected void setupUI() {
-        getSupportActionBar().setTitle("");
+        setSupportActionBar(toolbar);
+        toolbar = findViewById(R.id.myToolbar);
+
         emailInput = findViewById(R.id.emailloginInput);
         passwordInput = findViewById(R.id.passwordloginInput);
         loginButton = findViewById(R.id.loginButton);

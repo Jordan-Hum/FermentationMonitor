@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".loginActivity">
 
+    <include layout="@layout/appbar"/>
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="285dp"
@@ -87,10 +89,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.087" />
+        app:layout_constraintVertical_bias="0.156" />
 
     <ProgressBar
         android:id="@+id/progressBarLogin"

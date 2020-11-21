@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".CurrentBrewActivity">
 
+    <include layout="@layout/appbar"/>
+
     <TextView
         android:id="@+id/current_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="75dp"
         android:text="Current Brew"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -101,7 +103,7 @@
         android:id="@+id/current_graphButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="25dp"
         android:background="#AE2020"
         android:text="Graph"
         android:textColor="#FAFAFA"
