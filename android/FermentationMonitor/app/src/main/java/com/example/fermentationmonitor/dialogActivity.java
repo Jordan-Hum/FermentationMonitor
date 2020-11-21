@@ -17,6 +17,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class dialogActivity extends AppCompatDialogFragment {
 
     private FirebaseAuth fAuth;
@@ -24,6 +28,7 @@ public class dialogActivity extends AppCompatDialogFragment {
     private DatabaseReference dbRef;
     protected TextView brewTitleInput;
     protected TextView yeastTypeInput;
+    protected TextView idealSgInput;
     String userID;
 
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -44,6 +49,7 @@ public class dialogActivity extends AppCompatDialogFragment {
 
         brewTitleInput = view.findViewById(R.id.brewTitleInput);
         yeastTypeInput = view.findViewById(R.id.yeastTypeInput);
+        idealSgInput = view.findViewById(R.id.idealSgInput);
 
         builder.setView(view).setTitle("Add New Brew").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
@@ -57,6 +63,8 @@ public class dialogActivity extends AppCompatDialogFragment {
 
                 String brewTitle = brewTitleInput.getText().toString().trim();
                 String yeastType = yeastTypeInput.getText().toString().trim();
+                String idealSg = idealSgInput.getText().toString().trim();
+                String date = getDate();
 
                 //***Needs to be fixed***
                 if(TextUtils.isEmpty(brewTitle)) {
@@ -67,12 +75,22 @@ public class dialogActivity extends AppCompatDialogFragment {
                     yeastTypeInput.setError("Yeast Type is required");
                     return;
                 }
+                if(TextUtils.isEmpty(idealSg)) {
+                    yeastTypeInput.setError("Ideal specific gravity is required");
+                    return;
+                }
 
-                Batch batch = new Batch(brewTitle, "13/11/2020", "", userID, yeastType);
+                Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg);
                 dbRef.push().setValue(batch);
             }
 
         });
         return builder.create();
+    }
+
+    private String getDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }

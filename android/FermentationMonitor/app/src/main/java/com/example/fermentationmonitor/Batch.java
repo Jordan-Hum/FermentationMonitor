@@ -7,15 +7,17 @@ public class Batch {
     private String endDate;
     private String userId;
     private String yeastType;
+    private String idealSg;
 
     public Batch() {}
 
-    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType) {
+    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType, String idealSg) {
         this.batchName = batchName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.userId = userId;
         this.yeastType = yeastType;
+        this.idealSg = idealSg;
     }
 
     public String getId() {
@@ -64,5 +66,13 @@ public class Batch {
 
     public void setYeastType(String yeastType) {
         this.yeastType = yeastType;
+    }
+
+    public String getIdealSg() {
+        return idealSg;
+    }
+
+    public void setIdealSg(String idealSg) {
+        this.idealSg = idealSg;
     }
 }
