@@ -45,6 +45,7 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
     private FirebaseAuth fAuth;
     private FirebaseDatabase db;
     private DatabaseReference dbRef;
+    protected SharedPreferenceHelper sharedPreferenceHelper;
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -54,13 +55,16 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_brews);
+
         fAuth = FirebaseAuth.getInstance();
         userID = fAuth.getCurrentUser().getUid();
         db = FirebaseDatabase.getInstance();
         dbRef = db.getReference("SensorData");
-        setupUI();
-        setSupportActionBar(toolbar);
+        sharedPreferenceHelper = new SharedPreferenceHelper(PastBrewsActivity.this);
 
+        setupUI();
+
+        setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -84,9 +88,9 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(PastBrewsActivity.this, CurrentBrewActivity.class);
-                intent.putExtra("batchId", batchList.get(position).getId());
-                intent.putExtra("yeastType", batchList.get(position).getYeastType());
-                intent.putExtra("batchName", batchList.get(position).getBatchName());
+                sharedPreferenceHelper.saveBatchId(batchList.get(position));
+                sharedPreferenceHelper.saveBatchName(batchList.get(position));
+                sharedPreferenceHelper.saveYeastType(batchList.get(position));
                 startActivity(intent);
             }
         });
