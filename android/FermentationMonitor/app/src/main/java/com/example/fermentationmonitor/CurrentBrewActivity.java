@@ -54,12 +54,16 @@ public class CurrentBrewActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseDatabase db;
     private DatabaseReference dbRef;
+    protected SharedPreferenceHelper sharedPreferenceHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_brew);
+        sharedPreferenceHelper = new SharedPreferenceHelper(CurrentBrewActivity.this);
+
         setupUI();
+
         fAuth = FirebaseAuth.getInstance();
         userID = fAuth.getCurrentUser().getUid();
         db = FirebaseDatabase.getInstance();
@@ -73,9 +77,9 @@ public class CurrentBrewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        batchID = intent.getStringExtra("batchId");
-        batchName = intent.getStringExtra("batchName");
-        yeast = intent.getStringExtra("yeastType");
+        batchID = sharedPreferenceHelper.getBatchId();
+        batchName = sharedPreferenceHelper.getBatchName();
+        yeast = sharedPreferenceHelper.getYeastType();
 
         title = findViewById(R.id.current_title);
         title.setText(batchName);
@@ -98,7 +102,6 @@ public class CurrentBrewActivity extends AppCompatActivity {
             Intent intent = new Intent(CurrentBrewActivity.this, DensityGraphActivity.class);
             intent.putExtra("batchId", batchID);
             startActivity(intent);
-            finish(); //Needs to be deleted
 		}
     };
     
