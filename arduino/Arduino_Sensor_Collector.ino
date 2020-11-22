@@ -14,6 +14,8 @@ float distance[1];
 const int AVERAGE_OF =50;
 const float MCU_VOLTAGE = 5.0;
 float initial = 0;
+double sg;
+bool isSetup = false;
 
 float convertData(float);
 void sendBrewData();
@@ -23,11 +25,41 @@ float readDistance(float);
 void setup(){
   Serial.begin(9600); 
   mlx.begin(); 
+  
+  //Obtain SG from NodeMCU before starting
+  while(!isSetup){
+	getSG();
+  }
 }
 
 void loop(){
    sendBrewData();
    delay(timeUntilNextReading);
+}
+
+void getSG(){
+	
+	// busy spin until response is received 
+	while(messageReady == false) { 
+		if(Serial.available()) {
+			message = Serial.readString();
+			messageReady = true;
+		}
+	}
+	// Attempt to deserialize the JSON-formatted message
+	DeserializationError error = deserializeJson(doc,message);
+	if(error) {
+		Serial.print(F("deserializeJson() failed: "));
+		Serial.println(error.c_str());
+		return;
+	}
+	
+	//set sg if the right message has been received
+	if(doc["type"] == setup){
+		sg = doc["initSG"];
+		isSetup = true;
+	}
+
 }
 
 void sendBrewData(){
@@ -73,3 +105,5 @@ float convertData(float delta){ // convert delta to SG
    sg_value = 0.01*delta + 1;
    return sg_value;
 }
+
+

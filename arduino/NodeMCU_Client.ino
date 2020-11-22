@@ -15,7 +15,7 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
-const String USER_ID = "sampleUserId";
+const String DEVICE_ID = "V2FREYMzdagSZQMjVMOl8gyo24X2";
 const long utcOffsetInSeconds = -18000;
 
 // Define NTP Client to get time
@@ -26,6 +26,9 @@ FirebaseData firebaseData;
 
 boolean messageReady = false;
 String message = "";
+String devicePath = "/Devices/" + DEVICE_ID;
+String batchId = "";
+bool isSetup = false;
 
 void sendRequest();
 void sendData(DynamicJsonDocument);
@@ -64,6 +67,11 @@ void setup() {
   Firebase.begin(FIREBASE_HOST,FIREBASE_AUTH);
   
   Serial.println("");
+  
+  while(!isSetup){
+	sendSG();
+  }
+  
 }
 
 void loop(){
@@ -93,9 +101,48 @@ void sendRequest(){
   }
 }
 
+void sendSG(){
+	
+	String sg;
+	DynamicJsonDocument doc(1024);
+	
+	//Get BatchID for userPath
+	if (Firebase.getString(firebaseData,devicePath+"/currentBatchId"))
+	{
+		batchId = firebaseData.stringData();
+	}
+	else
+	{
+		Serial.println("FAILED");
+		Serial.println("REASON: " + firebaseData.errorReason());
+		Serial.println("------------------------------------");
+		Serial.println();
+		return;
+    }
+
+	String dataPath = "/SensorData/"+batchId+"/SG";
+  
+	if (Firebase.getString(firebaseData,dataPath)) {
+		sg = firebaseData.stringData();
+	}
+	else
+	{
+		Serial.println("FAILED");
+		Serial.println("REASON: " + firebaseData.errorReason());
+		Serial.println("------------------------------------");
+		Serial.println();
+		return;
+	}
+	
+	doc["type"] = "setup";
+    // Get data from analog sensors
+    doc["initSG"] = sg;
+    serializeJson(doc,Serial);
+	isSetup = true;
+}
+
 void sendData(DynamicJsonDocument res){
   
-  String userPath = "/Users/" + USER_ID;
   String batchId;
   FirebaseJson json1;
 
