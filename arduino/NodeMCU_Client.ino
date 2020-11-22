@@ -15,8 +15,12 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
-const String DEVICE_ID = "V2FREYMzdagSZQMjVMOl8gyo24X2";
+const String DEVICE_ID = "testDevice";
 const long utcOffsetInSeconds = -18000;
+double initial = 0;
+double offset;
+double sg;
+bool isSetup = false;
 
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
@@ -28,10 +32,17 @@ boolean messageReady = false;
 String message = "";
 String devicePath = "/Devices/" + DEVICE_ID;
 String batchId = "";
-bool isSetup = false;
+
+
+double convertData(double );
+double temperatureCorrectionSG(double , double );
+double fahrenheitToCel(double );
+
 
 void sendRequest();
-void sendData(DynamicJsonDocument);
+void extractData(DynamicJsonDocument);
+void sendData(double,double);
+void fetchSG();
 
 void setup() {
   timeClient.begin();
@@ -46,13 +57,15 @@ void setup() {
   Serial.println(WIFI_SSID);
   
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
   
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
-    Serial.print(".");
+    //Serial.print(".");
   }
 
+  
   Serial.println("");
   Serial.println("WiFi connected");  
   Serial.println("IP address: ");
@@ -63,13 +76,16 @@ void setup() {
   Serial.println(WiFi.gatewayIP());
 
   Serial.println("Connecting to Firebase");
+  
+  
   //Set data to firebase here
   Firebase.begin(FIREBASE_HOST,FIREBASE_AUTH);
   
   Serial.println("");
   
+  
   while(!isSetup){
-	sendSG();
+	  fetchSG();
   }
   
 }
@@ -96,14 +112,13 @@ void sendRequest(){
   }
 
   if(doc["type"] == "response"){ 
-    sendData(doc);
+    extractData(doc);
     messageReady = false;
   }
 }
 
-void sendSG(){
+void fetchSG(){
 	
-	String sg;
 	DynamicJsonDocument doc(1024);
 	
 	//Get BatchID for userPath
@@ -122,8 +137,8 @@ void sendSG(){
 
 	String dataPath = "/SensorData/"+batchId+"/SG";
   
-	if (Firebase.getString(firebaseData,dataPath)) {
-		sg = firebaseData.stringData();
+	if (Firebase.getDouble(firebaseData,dataPath)) {
+		sg = firebaseData.doubleData();
 	}
 	else
 	{
@@ -133,36 +148,45 @@ void sendSG(){
 		Serial.println();
 		return;
 	}
-	
-	doc["type"] = "setup";
-    // Get data from analog sensors
-    doc["initSG"] = sg;
-    serializeJson(doc,Serial);
-	isSetup = true;
+
+  Serial.println(String(sg));
+  isSetup = true;
 }
 
-void sendData(DynamicJsonDocument res){
+void extractData(DynamicJsonDocument res){
   
-  String batchId;
+  double dis = res["distance"];
+  double temp = res["tempOfLiquid"];
+
+  if(initial == 0){
+    offset = sg + (0.0100 * dis);
+    Serial.println(offset);
+  }
+  
+  initial = dis;
+
+  Serial.println("Initial: "+ String(initial));
+  sendData(initial, temp);
+}
+
+void sendData(double dist, double temp){
+  
   FirebaseJson json1;
 
   timeClient.update();
   String FormattedDate = timeClient.getFormattedDate();
-  
-  float sg = res["specificGravity"];
-  float temp = res["tempOfLiquid"];
   int splitT = FormattedDate.indexOf("T");
   String dayStamp = FormattedDate.substring(0, splitT);
   String timeStamp = FormattedDate.substring(splitT+1, FormattedDate.length()-1);
 
-   json1.set("specificGravity", String(sg));
-   json1.set("tempOfLiquid", String(temp));
+   json1.set("specificGravity", String(temperatureCorrectionSG(dist,temp)));
+   json1.set("tempOfLiquid", String(fahrenheitToCel(temp)));
    json1.set("time", timeStamp);
    json1.set("date", dayStamp);
   
 
   //Get BatchID for userPath
-  if (Firebase.getString(firebaseData,userPath+"/currentBatchId"))
+  if (Firebase.getString(firebaseData,devicePath+"/currentBatchId"))
   {
       batchId = firebaseData.stringData();
     }
@@ -189,3 +213,26 @@ void sendData(DynamicJsonDocument res){
       Serial.println();
   }
 }
+
+double convertData(double dist){ // convert delta to SG
+   double sg_value;
+   sg_value = (-0.0100 * dist) + offset;
+   return sg_value;
+}
+
+double temperatureCorrectionSG(double dist, double mesuredTemp){
+  
+  Serial.println("distance: " + String(dist));
+  double measuredGravity = convertData(dist);
+  Serial.println("measured SG:" + String(measuredGravity));
+  double tempeartureAtReading = mesuredTemp; //Fahrenheit from sensor
+  double calibrationTemperature = 60 ; //In Fahrenheit, value for our hydrometer
+  
+  double correctedSG =  measuredGravity * ((1.00130346 - 0.000134722124 * tempeartureAtReading + 0.00000204052596 * tempeartureAtReading - 0.00000000232820948 * tempeartureAtReading) / (1.00130346 - 0.000134722124 * calibrationTemperature + 0.00000204052596 * calibrationTemperature - 0.00000000232820948 * calibrationTemperature));
+  Serial.println(correctedSG);
+  return correctedSG;
+ }
+
+double fahrenheitToCel(double tempF) {
+  return (tempF - 32)/ 0.556 ; // temperature from fahrenheit to celcius
+ }
