@@ -88,6 +88,8 @@ public class CurrentBrewActivity extends AppCompatActivity {
         listView = findViewById(R.id.current_list);
         graphButton = findViewById(R.id.current_graphButton);
         graphButton.setOnClickListener(onClickGraphButton);
+        deleteButton = findViewById(R.id.current_deleteButton);
+        deleteButton.setOnClickListener(onClickDeleteButton);
     }
 
     private Button.OnClickListener onClickGraphButton = new Button.OnClickListener() {
