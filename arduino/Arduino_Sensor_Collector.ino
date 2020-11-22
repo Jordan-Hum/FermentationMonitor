@@ -10,16 +10,17 @@ const int timeUntilNextReading = 30000;
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 const int sensorPin[] = {A0};
-float distance[1];
+double distance[1];
 const int AVERAGE_OF =50;
 const float MCU_VOLTAGE = 5.0;
-float initial = 0;
+double initial = 0;
+double offset;
 double sg;
 bool isSetup = false;
 
-float convertData(float);
+doubel convertData(doubel);
 void sendBrewData();
-float readDistance(float);
+doubel readDistance(doubel);
 
 
 void setup(){
@@ -63,29 +64,31 @@ void getSG(){
 }
 
 void sendBrewData(){
-  float temperatureValue = mlx.readObjectTempC();
-  float delta ;
+  doubel temperatureValue = mlx.readObjectTempF();
+  doubel delta ;
   DynamicJsonDocument doc(1024);
   
-  if(initial == 0){
-    initial = readDistance(0);
-    delta = initial;
+	if(initial == 0){
+		double first = readDistance(0);
+		offset = sg - (0.01*first);
+		inital = first;
     }
    else {
-        delta = initial - readDistance(0);
+	    //As the hydrometer sinks, it move away from the sensor, thus readDistance > inital 
+        delta = readDistance(0) - inital;
         initial -= delta;
     }
     
     doc["type"] = "response";
     // Get data from analog sensors
-    doc["specificGravity"] = convertData(delta);
-    doc["tempOfLiquid"] = temperatureValue;
+    doc["specificGravity"] = temperatureCorrectionSG(initial, temperatureValue);
+    doc["tempOfLiquid"] = fahrenheitToCel(temperatureValue)
     serializeJson(doc,Serial);
     
 }
 
-float readDistance(int sensor){ //Read Distance
-      float voltage_temp_average=0;   
+double readDistance(int sensor){ //Read Distance
+      doubel voltage_temp_average=0;   
       for(int i=0; i < AVERAGE_OF; i++)
     {
       int sensorValue = analogRead(sensorPin[sensor] );
@@ -100,10 +103,24 @@ float readDistance(int sensor){ //Read Distance
   return distance[sensor];
 }
 
-float convertData(float delta){ // convert delta to SG
-   float sg_value;
-   sg_value = 0.01*delta + 1;
+doubel convertData(doubel delta){ // convert delta to SG
+   doubel sg_value;
+   sg_value = 0.01 * delta + offset;
    return sg_value;
 }
+
+double temperatureCorrectionSG(double delta, double mesuredTemp){
+	
+	double measuredGravity = convertData(delta);
+	double tempeartureAtReading = mesuredTemp; //Fahrenheit from sensor
+	double calibrationTemperature = 60 ; //In Fahrenheit, value for our hydrometer
+	
+	return measuredGravity * ((1.00130346 - 0.000134722124 * tempeartureAtReading + 0.00000204052596 * tempeartureAtReading - 0.00000000232820948 * tempeartureAtReading) / (1.00130346 - 0.000134722124 * calibrationTemperature + 0.00000204052596 * calibrationTemperature - 0.00000000232820948 * calibrationTemperature));
+ 
+ }
+
+double fahrenheitToCel(double tempF) {
+	return (tempF - 32)/ 0.556 ; // temperature from fahrenheit to celcius
+ }
 
 
