@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PastBrewsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -103,7 +104,7 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void loadData() {
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.orderByChild("startDate").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
@@ -113,6 +114,7 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
                         data.setId(dataSnapshot.getKey());
                         batchList.add(data);
                     }
+                    Collections.reverse(batchList);
                     BatchListAdapter adapter = new BatchListAdapter(PastBrewsActivity.this, R.layout.past_brews_list_layout, batchList);
                     listView.setAdapter(adapter);
                 }
