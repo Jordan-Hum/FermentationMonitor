@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.number.Precision;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,11 +32,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CurrentBrewActivity extends AppCompatActivity {
     protected TextView title;
     protected TextView yeastType;
+    protected TextView alcoholLevel;
     protected TextView date;
     protected TextView time;
     protected TextView density;
@@ -76,7 +79,6 @@ public class CurrentBrewActivity extends AppCompatActivity {
         toolbar.setTitle("Current Brew");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
         batchID = sharedPreferenceHelper.getBatchId();
         batchName = sharedPreferenceHelper.getBatchName();
         yeast = sharedPreferenceHelper.getYeastType();
@@ -85,6 +87,8 @@ public class CurrentBrewActivity extends AppCompatActivity {
         title.setText(batchName);
         yeastType = findViewById(R.id.current_yeastType);
         yeastType.setText("Yeast Type: " + yeast);
+        alcoholLevel = findViewById(R.id.current_alcoholLevel);
+        alcoholLevel.setText("Alcohol Level: - ");
         date = findViewById(R.id.current_date);
         time = findViewById(R.id.current_time);
         density = findViewById(R.id.current_density);
@@ -146,6 +150,8 @@ public class CurrentBrewActivity extends AppCompatActivity {
                         BrewData data = dataSnapshot.getValue(BrewData.class);
                         brewDataList.add(data);
                     }
+                    Collections.reverse(brewDataList);
+                    calculateAlcoholLevel();
                     BrewDataListAdapter adapter = new BrewDataListAdapter(CurrentBrewActivity.this, R.layout.current_brew_list_layout, brewDataList);
                     listView.setAdapter(adapter);
                 }
@@ -156,5 +162,18 @@ public class CurrentBrewActivity extends AppCompatActivity {
                 Toast.makeText(CurrentBrewActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void calculateAlcoholLevel() {
+        if(brewDataList.isEmpty()) {
+            alcoholLevel.setText("Alcohol Level: - ");
+        } else {
+            float startSG = Float.valueOf(brewDataList.get(brewDataList.size() - 1).getSpecificGravity());
+            float finalSG = Float.valueOf(brewDataList.get(0).getSpecificGravity());
+
+            double scale = Math.pow(10, 2);
+            double alcoholLvl = Math.round(((startSG - finalSG) * 131.25) * scale) / scale;
+            alcoholLevel.setText("Alcohol Level: " + alcoholLvl + "%");
+        }
     }
 }

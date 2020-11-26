@@ -7,10 +7,9 @@
 
     <TextView
         android:id="@+id/currentList_date"
-        android:layout_width="100dp"
+        android:layout_width="88dp"
         android:layout_height="30dp"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textAlignment="center" />
 
     <View
         android:layout_width="1dp"
@@ -21,10 +20,9 @@
 
     <TextView
         android:id="@+id/currentList_time"
-        android:layout_width="78dp"
+        android:layout_width="84dp"
         android:layout_height="30dp"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textAlignment="center" />
 
     <View
         android:layout_width="1dp"
@@ -35,10 +33,9 @@
 
     <TextView
         android:id="@+id/currentList_density"
-        android:layout_width="75dp"
+        android:layout_width="84dp"
         android:layout_height="30dp"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textAlignment="center" />
 
     <View
         android:layout_width="1dp"
@@ -51,6 +48,5 @@
         android:id="@+id/currentList_temp"
         android:layout_width="114dp"
         android:layout_height="30dp"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:textAlignment="center" />
 </LinearLayout>
