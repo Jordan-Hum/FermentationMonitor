@@ -130,7 +130,7 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
     private FloatingActionButton.OnClickListener onClickaddButton = new FloatingActionButton.OnClickListener() {
         @Override
         public void onClick(View v) {
-            dialogActivity dialog = new dialogActivity();
+            dialogActivity dialog = new dialogActivity(PastBrewsActivity.this);
             dialog.show(getSupportFragmentManager(), "addBrewDialog");
         }
     };
