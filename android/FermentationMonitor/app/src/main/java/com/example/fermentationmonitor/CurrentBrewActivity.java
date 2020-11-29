@@ -10,6 +10,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.number.Precision;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -31,8 +34,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class CurrentBrewActivity extends AppCompatActivity {
@@ -44,9 +50,7 @@ public class CurrentBrewActivity extends AppCompatActivity {
     protected TextView density;
     protected TextView temp;
     protected ListView listView;
-    protected Button graphButton;
-    protected Button notesButton;
- 	protected FloatingActionButton deleteButton;
+ 	protected FloatingActionButton notesButton;
  	private Toolbar toolbar;
 
     protected List<BrewData> brewDataList = new ArrayList<>();
@@ -58,6 +62,7 @@ public class CurrentBrewActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseDatabase db;
     private DatabaseReference dbRef;
+    private DatabaseReference dbRefEndDate;
     protected SharedPreferenceHelper sharedPreferenceHelper;
 
     @Override
@@ -72,6 +77,55 @@ public class CurrentBrewActivity extends AppCompatActivity {
         userID = fAuth.getCurrentUser().getUid();
         db = FirebaseDatabase.getInstance();
         dbRef = db.getReference("SensorData/" + batchID + "/brewData");
+        dbRefEndDate = db.getReference("SensorData/" + batchID + "/endDate" );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.optionsmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item1:
+                Intent intent = new Intent(CurrentBrewActivity.this, DensityGraphActivity.class);
+                intent.putExtra("batchId", batchID);
+                startActivity(intent);
+                return true;
+            case R.id.item2:
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder((CurrentBrewActivity.this));
+                builder.setMessage("Are you sure want to delete batch: " + batchName + "?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DatabaseReference delRef = db.getReference("SensorData/" + batchID);
+                                delRef.removeValue();
+
+                                Toast.makeText(CurrentBrewActivity.this, "Batch Deleted" , Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CurrentBrewActivity.this, PastBrewsActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                return true;
+
+            case R.id.item3:
+                dbRefEndDate.setValue(getDate());
+                //set current device id to -1
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupUI() {
@@ -91,57 +145,19 @@ public class CurrentBrewActivity extends AppCompatActivity {
         alcoholLevel = findViewById(R.id.current_alcoholLevel);
         alcoholLevel.setText("Alcohol Level: - ");
         date = findViewById(R.id.current_date);
-        notesButton = findViewById(R.id.notesButton);
-        notesButton.setOnClickListener(onClicknotesButton);
         time = findViewById(R.id.current_time);
         density = findViewById(R.id.current_density);
         temp = findViewById(R.id.current_temp);
         listView = findViewById(R.id.current_list);
-        graphButton = findViewById(R.id.current_graphButton);
-        graphButton.setOnClickListener(onClickGraphButton);
-        deleteButton = findViewById(R.id.current_deleteButton);
-        deleteButton.setOnClickListener(onClickDeleteButton);
+        notesButton = findViewById(R.id.current_notesButton);
+        notesButton.setOnClickListener(onClickNotesButton);
     }
-
-    private View.OnClickListener onClicknotesButton = new View.OnClickListener(){
+    
+    private Button.OnClickListener onClickNotesButton = new Button.OnClickListener() {
         @Override
-        public void onClick(View view) {
+        public void onClick(View v) {
             notesDialogActivity notesDialog = new notesDialogActivity(batchID);
             notesDialog.show(getSupportFragmentManager(), "notes dialog");
-        }
-    };
-
-    private Button.OnClickListener onClickGraphButton = new Button.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(CurrentBrewActivity.this, DensityGraphActivity.class);
-            intent.putExtra("batchId", batchID);
-            startActivity(intent);
-		}
-    };
-    
-    private Button.OnClickListener onClickDeleteButton = new Button.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder((CurrentBrewActivity.this));
-            builder.setMessage("Are you sure want to delete batch: " + batchName + "?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            DatabaseReference delRef = db.getReference("SensorData/" + batchID);
-                            delRef.removeValue();
-
-                            Toast.makeText(CurrentBrewActivity.this, "Batch Deleted" , Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(CurrentBrewActivity.this, PastBrewsActivity.class);
-                            startActivity(intent);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
         }
     };
 
@@ -186,5 +202,11 @@ public class CurrentBrewActivity extends AppCompatActivity {
             double alcoholLvl = Math.round(((startSG - finalSG) * 131.25) * scale) / scale;
             alcoholLevel.setText("Alcohol Level: " + alcoholLvl + "%");
         }
+    }
+
+    private String getDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 }
