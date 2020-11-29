@@ -135,10 +135,10 @@ void fetchSG(){
 		return;
     }
 
-	String dataPath = "/SensorData/"+batchId+"/SG";
+	String dataPath = "/SensorData/"+batchId+"/idealSg";
   
-	if (Firebase.getDouble(firebaseData,dataPath)) {
-		sg = firebaseData.doubleData();
+	if (Firebase.getString(firebaseData,dataPath)) {
+		sg = firebaseData.stringData().toDouble();
 	}
 	else
 	{
@@ -149,7 +149,7 @@ void fetchSG(){
 		return;
 	}
 
-  Serial.println(String(sg));
+  Serial.println(sg);
   isSetup = true;
 }
 

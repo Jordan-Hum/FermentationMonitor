@@ -5,7 +5,7 @@
 
 String message = "";
 bool messageReady = false;
-const int timeUntilNextReading = 10000;
+const long timeUntilNextReading = 120000;
 
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
@@ -23,7 +23,7 @@ void setup(){
   Serial.begin(9600); 
   mlx.begin(); 
 
-  delay(500);
+  delay(20000);
 }
 
 void loop(){
