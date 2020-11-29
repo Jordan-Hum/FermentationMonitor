@@ -80,7 +80,7 @@ public class dialogActivity extends AppCompatDialogFragment {
                     return;
                 }
 
-                Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg);
+                Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg, "");
                 dbRef.push().setValue(batch);
             }
 

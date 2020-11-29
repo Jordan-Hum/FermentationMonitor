@@ -8,16 +8,26 @@ public class Batch {
     private String userId;
     private String yeastType;
     private String idealSg;
+    private String notes;
 
     public Batch() {}
 
-    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType, String idealSg) {
+    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType, String idealSg, String notes) {
         this.batchName = batchName;
         this.startDate = startDate;
         this.endDate = endDate;
         this.userId = userId;
         this.yeastType = yeastType;
         this.idealSg = idealSg;
+        this.notes = notes;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getId() {

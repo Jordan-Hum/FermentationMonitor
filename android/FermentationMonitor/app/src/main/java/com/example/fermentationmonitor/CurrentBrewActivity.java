@@ -45,6 +45,7 @@ public class CurrentBrewActivity extends AppCompatActivity {
     protected TextView temp;
     protected ListView listView;
     protected Button graphButton;
+    protected Button notesButton;
  	protected FloatingActionButton deleteButton;
  	private Toolbar toolbar;
 
@@ -90,6 +91,8 @@ public class CurrentBrewActivity extends AppCompatActivity {
         alcoholLevel = findViewById(R.id.current_alcoholLevel);
         alcoholLevel.setText("Alcohol Level: - ");
         date = findViewById(R.id.current_date);
+        notesButton = findViewById(R.id.notesButton);
+        notesButton.setOnClickListener(onClicknotesButton);
         time = findViewById(R.id.current_time);
         density = findViewById(R.id.current_density);
         temp = findViewById(R.id.current_temp);
@@ -99,6 +102,14 @@ public class CurrentBrewActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.current_deleteButton);
         deleteButton.setOnClickListener(onClickDeleteButton);
     }
+
+    private View.OnClickListener onClicknotesButton = new View.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+            notesDialogActivity notesDialog = new notesDialogActivity(batchID);
+            notesDialog.show(getSupportFragmentManager(), "notes dialog");
+        }
+    };
 
     private Button.OnClickListener onClickGraphButton = new Button.OnClickListener() {
         @Override
