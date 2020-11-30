@@ -9,10 +9,11 @@ public class Batch {
     private String yeastType;
     private String idealSg;
     private String notes;
+    private String deviceId;
 
     public Batch() {}
 
-    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType, String idealSg, String notes) {
+    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType, String idealSg, String notes, String deviceId) {
         this.batchName = batchName;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -20,6 +21,15 @@ public class Batch {
         this.yeastType = yeastType;
         this.idealSg = idealSg;
         this.notes = notes;
+        this.deviceId = deviceId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getNotes() {

@@ -2,18 +2,23 @@ package com.example.fermentationmonitor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +31,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class PastBrewsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +50,8 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
 
     protected List<Batch> batchList = new ArrayList<>();
     protected String userID;
+    protected String deviceID;
+    protected List<String> devices = new ArrayList<>();
 
     private FirebaseAuth fAuth;
     private FirebaseDatabase db;
@@ -111,8 +121,10 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
                     batchList.clear();
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Batch data = dataSnapshot.getValue(Batch.class);
-                        data.setId(dataSnapshot.getKey());
-                        batchList.add(data);
+                        if(data.getUserId().equals(userID)) {
+                            data.setId(dataSnapshot.getKey());
+                            batchList.add(data);
+                        }
                     }
                     Collections.reverse(batchList);
                     BatchListAdapter adapter = new BatchListAdapter(PastBrewsActivity.this, R.layout.past_brews_list_layout, batchList);
