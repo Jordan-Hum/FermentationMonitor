@@ -34,13 +34,13 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         fAuth = FirebaseAuth.getInstance();
-        isLogin();
         setupUI();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        isLogin();
         progressBar.setVisibility(View.INVISIBLE);
     }
 

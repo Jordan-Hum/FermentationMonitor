@@ -96,9 +96,10 @@ public class dialogActivity extends AppCompatDialogFragment {
                 }
 
                 Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg, "", deviceID);
-                dbRef.push().setValue(batch);
+                String batchId = dbRef.push().getKey();
+                dbRef.child(batchId).setValue(batch);
 
-                db.getReference("Devices/").child(deviceID).child("currentBatchId").setValue("-1");
+                db.getReference("Devices/").child(deviceID).child("currentBatchId").setValue(batchId);
             }
 
         });

@@ -8,14 +8,14 @@
 
     <EditText
         android:id="@+id/notesTextID"
-        android:layout_width="330dp"
+        android:layout_width="300dp"
         android:layout_height="536dp"
         android:layout_marginTop="16dp"
         android:background="#D5CDCD"
         android:gravity="top|left"
         android:hint="Notes"
         android:inputType="textMultiLine"
-        android:lines="15"
+        android:lines="30"
         android:overScrollMode="always"
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"

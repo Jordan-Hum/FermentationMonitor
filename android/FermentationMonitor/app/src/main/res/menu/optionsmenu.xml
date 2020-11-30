@@ -7,11 +7,13 @@
         android:title="Graph"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/item2"
-        android:title="Delete Batch"
-        app:showAsAction="never"/>
-
-    <item android:id="@+id/item3"
+    <item
+        android:id="@+id/item2"
         android:title="End Batch"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item3"
+        android:title="Delete Batch"
+        app:showAsAction="never" />
 </menu>

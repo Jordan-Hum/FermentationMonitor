@@ -96,8 +96,10 @@ public class CurrentBrewActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.item2:
-
-
+                dbRefEndDate.setValue(getDate());
+                //set current device id to -1
+                return true;
+            case R.id.item3:
                 AlertDialog.Builder builder = new AlertDialog.Builder((CurrentBrewActivity.this));
                 builder.setMessage("Are you sure want to delete batch: " + batchName + "?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -118,12 +120,6 @@ public class CurrentBrewActivity extends AppCompatActivity {
                             }
                         }).show();
                 return true;
-
-            case R.id.item3:
-                dbRefEndDate.setValue(getDate());
-                //set current device id to -1
-                return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
