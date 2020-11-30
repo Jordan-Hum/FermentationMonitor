@@ -15,7 +15,7 @@
         android:gravity="top|left"
         android:hint="Notes"
         android:inputType="textMultiLine"
-        android:lines="6"
+        android:lines="15"
         android:overScrollMode="always"
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
