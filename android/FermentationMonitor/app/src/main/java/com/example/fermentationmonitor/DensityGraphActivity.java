@@ -7,9 +7,12 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Color;
+import android.view.View;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -28,6 +31,9 @@ public class DensityGraphActivity extends AppCompatActivity {
     protected LineData lineData;
     protected LineDataSet lineDataSet;
     private Toolbar toolbar;
+
+    //private XAxis xaxis; //= lineChart.getXAxis();
+    private YAxis yaxis;
 
     protected List<Entry> lineEntries = new ArrayList<>();
     protected String batchID;
@@ -54,6 +60,8 @@ public class DensityGraphActivity extends AppCompatActivity {
         batchID = intent.getStringExtra("batchId");
 
         lineChart = findViewById(R.id.lineChart);
+
+
     }
 
     @Override
@@ -95,9 +103,27 @@ public class DensityGraphActivity extends AppCompatActivity {
 
         lineDataSet.setColors(ColorTemplate.rgb("800000"));
         lineDataSet.setValueTextColor(Color.BLACK);
-        lineDataSet.setValueTextSize(15f);
+        lineDataSet.setValueTextSize(10f);
 
-        lineChart.animateXY(2000,2000);
+        lineChart.setExtraTopOffset(65f);
+        lineChart.setVisibleXRangeMaximum(5f);
+
+        XAxis xaxis = lineChart.getXAxis();
+
+
+
+
+
+        //lineChart.animateXY(2000,2000);
 
     }
+
+
+
+
+
+
+
+
+
 }
