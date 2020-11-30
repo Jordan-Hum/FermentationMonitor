@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,22 +38,16 @@ public class dialogActivity extends AppCompatDialogFragment {
     protected TextView brewTitleInput;
     protected TextView yeastTypeInput;
     protected TextView idealSgInput;
-    protected Spinner spinner;
 
-    private Context context;
     private String userID;
+    private String deviceID;
     private List<String> devices = new ArrayList<>();
 
     private FirebaseAuth fAuth;
     private FirebaseDatabase db;
     private DatabaseReference dbRef;
 
-    public dialogActivity(Context context){
-        this.context = context;
-    }
-
     public Dialog onCreateDialog(Bundle savedInstanceState){
-
         db = FirebaseDatabase.getInstance();
         dbRef = db.getReference("SensorData");
 
@@ -66,21 +62,13 @@ public class dialogActivity extends AppCompatDialogFragment {
         brewTitleInput = view.findViewById(R.id.brewTitleInput);
         yeastTypeInput = view.findViewById(R.id.yeastTypeInput);
         idealSgInput = view.findViewById(R.id.idealSgInput);
-        spinner = view.findViewById(R.id.add_dialog_spinner);
 
-        getDevices();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, devices);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        getDevice();
         
-        builder.setView(view).setTitle("Add New Brew").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setTitle("Add New Brew");
+        builder.setView(view);
 
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        }).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -102,12 +90,26 @@ public class dialogActivity extends AppCompatDialogFragment {
                     yeastTypeInput.setError("Ideal specific gravity is required");
                     return;
                 }
+                if(deviceID == null) {
+                    Toast.makeText(getActivity(), "Device needs to be registered before creating a batch", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
-                Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg, "");
+                Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg, "", deviceID);
                 dbRef.push().setValue(batch);
+
+                db.getReference("Devices/").child(deviceID).child("currentBatchId").setValue("-1");
             }
 
         });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
         return builder.create();
     }
 
@@ -117,17 +119,17 @@ public class dialogActivity extends AppCompatDialogFragment {
         return dateFormat.format(date);
     }
 
-    private void getDevices() {
+    private void getDevice() {
         db.getReference("Devices").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-                    devices.clear();
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Device device = dataSnapshot.getValue(Device.class);
                         if(device.getUserId().equals(userID)) {
                             device.setId(dataSnapshot.getKey());
-                            devices.add(device.getId());
+                            deviceID = device.getId();
+                            Log.d("ABC", deviceID + "");
                         }
                     }
                 }
@@ -137,7 +139,6 @@ public class dialogActivity extends AppCompatDialogFragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
         });
     }
 }
