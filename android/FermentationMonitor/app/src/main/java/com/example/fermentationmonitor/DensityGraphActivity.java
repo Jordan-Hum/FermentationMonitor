@@ -11,11 +11,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,9 +35,8 @@ public class DensityGraphActivity extends AppCompatActivity {
     protected LineDataSet lineDataSet;
     private Toolbar toolbar;
 
-    //private XAxis xaxis; //= lineChart.getXAxis();
-    private YAxis yaxis;
 
+    protected ArrayList<String> xLabel = new ArrayList<>();
     protected List<Entry> lineEntries = new ArrayList<>();
     protected String batchID;
 
@@ -78,6 +80,8 @@ public class DensityGraphActivity extends AppCompatActivity {
                     float x = 0;
                     lineEntries.clear();
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String date = String.valueOf(dataSnapshot.child("date").getValue().toString());
+                        xLabel.add(new String(date));
                         float sg = Float.valueOf(dataSnapshot.child("specificGravity").getValue().toString());
                         lineEntries.add(new Entry(x, sg));
                         x++;
@@ -103,18 +107,28 @@ public class DensityGraphActivity extends AppCompatActivity {
 
         lineDataSet.setColors(ColorTemplate.rgb("800000"));
         lineDataSet.setValueTextColor(Color.BLACK);
-        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setValueTextSize(12f);
 
         lineChart.setExtraTopOffset(65f);
         lineChart.setVisibleXRangeMaximum(5f);
+        lineChart.setScaleEnabled(false);
+
 
         XAxis xaxis = lineChart.getXAxis();
+        xaxis.setSpaceMin(1.5f);
+        xaxis.setCenterAxisLabels(false);
+        xaxis.isDrawGridLinesBehindDataEnabled();
+        xaxis.setLabelCount(6, true); //forces xaxis to freeze with 6 values and only move the line graph
 
 
-
-
-
-        //lineChart.animateXY(2000,2000);
+        xaxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xaxis.setDrawGridLines(true);
+        xaxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return xLabel.get((int)value);
+            }
+        });
 
     }
 
