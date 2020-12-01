@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,6 +37,8 @@ import java.util.Date;
 import java.util.List;
 
 public class dialogActivity extends AppCompatDialogFragment {
+
+    static String TAG = "dialogActivity";
 
     protected TextView brewTitleInput;
     protected TextView yeastTypeInput;
@@ -141,5 +146,20 @@ public class dialogActivity extends AppCompatDialogFragment {
 
             }
         });
+    }
+
+    private void registerBrewToMessageTopic(final String brewId) {
+        FirebaseMessaging.getInstance().subscribeToTopic(brewId)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Successfully Subscribed to "+brewId;
+                        if (!task.isSuccessful()) {
+                            msg = "Failed to Subscribe to "+ brewId;
+                        }
+                        Log.d(TAG, msg);
+                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

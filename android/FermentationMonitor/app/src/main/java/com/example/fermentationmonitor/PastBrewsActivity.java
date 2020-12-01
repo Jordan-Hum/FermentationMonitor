@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,9 @@ import java.util.Date;
 import java.util.List;
 
 public class PastBrewsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    static String TAG = "PastBrewActivity";
+
     //Variables
     protected TextView title;
     protected TextView batchName;
@@ -72,6 +78,7 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
         sharedPreferenceHelper = new SharedPreferenceHelper(PastBrewsActivity.this);
 
         setupUI();
+        setupCloudMessaging();
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,R.string.drawer_open, R.string.drawer_close);
@@ -169,5 +176,24 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setupCloudMessaging(){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(PastBrewsActivity.this, "Fetching FCM registration token failed", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        Log.d(TAG, token);
+                        Toast.makeText(PastBrewsActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
