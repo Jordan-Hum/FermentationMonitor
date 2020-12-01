@@ -67,7 +67,6 @@ public class ProfileSettingsActivity extends AppCompatActivity {
     };
 
     private void registerDevice(){
-
         dbRef = db.getReference("Devices/" + registerInput.getText() + "/userId");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -50,8 +50,6 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
 
     protected List<Batch> batchList = new ArrayList<>();
     protected String userID;
-    protected String deviceID;
-    protected List<String> devices = new ArrayList<>();
 
     private FirebaseAuth fAuth;
     private FirebaseDatabase db;
@@ -99,9 +97,12 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(PastBrewsActivity.this, CurrentBrewActivity.class);
-                sharedPreferenceHelper.saveBatchId(batchList.get(position));
-                sharedPreferenceHelper.saveBatchName(batchList.get(position));
-                sharedPreferenceHelper.saveYeastType(batchList.get(position));
+                Batch batch = batchList.get(position);
+                sharedPreferenceHelper.saveBatchId(batch);
+                sharedPreferenceHelper.saveBatchName(batch);
+                sharedPreferenceHelper.saveYeastType(batch);
+                sharedPreferenceHelper.saveEndDate(batch);
+                sharedPreferenceHelper.saveDeviceId(batch);
                 startActivity(intent);
             }
         });
