@@ -105,6 +105,8 @@ public class dialogActivity extends AppCompatDialogFragment {
                 dbRef.child(batchId).setValue(batch);
 
                 db.getReference("Devices/").child(deviceID).child("currentBatchId").setValue(batchId);
+
+                registerBrewToMessageTopic(batchId);
             }
 
         });
@@ -149,6 +151,7 @@ public class dialogActivity extends AppCompatDialogFragment {
     }
 
     private void registerBrewToMessageTopic(final String brewId) {
+        Log.d(TAG,"subscribing....");
         FirebaseMessaging.getInstance().subscribeToTopic(brewId)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -158,7 +161,7 @@ public class dialogActivity extends AppCompatDialogFragment {
                             msg = "Failed to Subscribe to "+ brewId;
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
