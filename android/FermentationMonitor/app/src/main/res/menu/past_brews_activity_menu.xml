@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/profile_settings"
         android:title="Profile Settings"
         android:icon="@drawable/ic_baseline_account_profile"/>
+    <item
+        android:id="@+id/basics_brewing"
+        android:title="The Basics of Brewing"
+        android:icon="@drawable/plus_button"/>
     <item
         android:id="@+id/past_brews_activity_logout"
         android:title="Logout"

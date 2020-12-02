@@ -173,6 +173,9 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
             case R.id.past_brews_activity_logout:
                 logout();
                 return true;
+            case R.id.basics_brewing:
+                Intent basicinfoActivity = new Intent(this, BasicInfoActivity.class);
+                startActivity(basicinfoActivity);
             default:
                 return super.onOptionsItemSelected(item);
         }

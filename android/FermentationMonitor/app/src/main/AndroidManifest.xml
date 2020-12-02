@@ -13,8 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DensityGraphActivity"
-                  android:parentActivityName=".CurrentBrewActivity"></activity>
+        <activity
+            android:name=".BasicInfoActivity"
+            android:parentActivityName=".PastBrewsActivity"
+            android:label="The Basics of Brewing"/>
+        <activity
+            android:name=".DensityGraphActivity"
+            android:parentActivityName=".CurrentBrewActivity" />
         <activity
             android:name=".CurrentBrewActivity"
             android:parentActivityName=".PastBrewsActivity" />
