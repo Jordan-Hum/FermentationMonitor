@@ -10,10 +10,12 @@ public class Batch {
     private String idealSg;
     private String notes;
     private String deviceId;
+    private String idealTemp;
+    private String FG;
 
     public Batch() {}
 
-    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType, String idealSg, String notes, String deviceId) {
+    public Batch(String batchName, String startDate, String endDate, String userId, String yeastType, String idealSg, String notes, String deviceId, String idealTemp, String FG) {
         this.batchName = batchName;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -22,6 +24,8 @@ public class Batch {
         this.idealSg = idealSg;
         this.notes = notes;
         this.deviceId = deviceId;
+        this.idealTemp = idealTemp;
+        this.FG = FG;
     }
 
     public String getDeviceId() {
@@ -95,4 +99,12 @@ public class Batch {
     public void setIdealSg(String idealSg) {
         this.idealSg = idealSg;
     }
+
+    public String getIdealTemp() { return idealTemp; }
+
+    public void setIdealTemp(String idealTemp) { this.idealTemp = idealTemp; }
+
+    public String getFG() { return FG; }
+
+    public void setFG(String FG) { this.FG = FG; }
 }

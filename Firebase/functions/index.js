@@ -37,12 +37,12 @@ exports.realtimeTrigger = functions.database.ref('/SensorData/{batchId}/brewData
     let payload;
 
     //Send three potential messages
-    //1. Measured gravity = ideal FG
-    if (parseFloat(brewData.specificGravity) <= parseFloat(BatchData.FG)) {
+    //1. Measured gravity = ideal fg
+    if (parseFloat(brewData.specificGravity) <= parseFloat(BatchData.fg)) {
         payload = {
             notification: {
                 title: `${BatchData.batchName} is ready !`,
-                body: `${BatchData.batchName} has reached its required gravity of ${BatchData.FG}`
+                body: `${BatchData.batchName} has reached its required gravity of ${BatchData.fg}`
             }
         }
 

@@ -29,10 +29,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.w3c.dom.Text;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class dialogActivity extends AppCompatDialogFragment {
     protected TextView brewTitleInput;
     protected TextView yeastTypeInput;
     protected TextView idealSgInput;
+    protected TextView idealTempInput;
+    protected TextView FGInput;
 
     private String userID;
     private String deviceID;
@@ -67,6 +70,8 @@ public class dialogActivity extends AppCompatDialogFragment {
         brewTitleInput = view.findViewById(R.id.brewTitleInput);
         yeastTypeInput = view.findViewById(R.id.yeastTypeInput);
         idealSgInput = view.findViewById(R.id.idealSgInput);
+        FGInput = view.findViewById(R.id.FGInput);
+        idealTempInput = view.findViewById(R.id.idealTempInput);
 
         getDevice();
         
@@ -80,6 +85,8 @@ public class dialogActivity extends AppCompatDialogFragment {
                 String brewTitle = brewTitleInput.getText().toString().trim();
                 String yeastType = yeastTypeInput.getText().toString().trim();
                 String idealSg = idealSgInput.getText().toString().trim();
+                String idealTemp = idealTempInput.getText().toString().trim();
+                String FG = FGInput.getText().toString().trim();
                 String date = getDate();
 
                 //***Needs to be fixed***
@@ -91,6 +98,14 @@ public class dialogActivity extends AppCompatDialogFragment {
                     yeastTypeInput.setError("Yeast Type is required");
                     return;
                 }
+                if(TextUtils.isEmpty(idealTemp)) {
+                    idealTempInput.setError("ideal Temperature is required");
+                    return;
+                }
+                if(TextUtils.isEmpty(FG)) {
+                    FGInput.setError("Ideal FG is required");
+                    return;
+                }
                 if(TextUtils.isEmpty(idealSg)) {
                     yeastTypeInput.setError("Ideal specific gravity is required");
                     return;
@@ -100,7 +115,7 @@ public class dialogActivity extends AppCompatDialogFragment {
                     return;
                 }
 
-                Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg, "", deviceID);
+                Batch batch = new Batch(brewTitle, date, "-", userID, yeastType, idealSg, "", deviceID, idealTemp, FG);
                 String batchId = dbRef.push().getKey();
                 dbRef.child(batchId).setValue(batch);
 
