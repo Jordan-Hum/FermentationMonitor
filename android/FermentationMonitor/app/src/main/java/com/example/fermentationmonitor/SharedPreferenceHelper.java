@@ -28,6 +28,18 @@ public class SharedPreferenceHelper {
         editor.commit();
     }
 
+    public void saveEndDate(Batch batch) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("endDate", batch.getEndDate());
+        editor.commit();
+    }
+
+    public void saveDeviceId(Batch batch) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("deviceId", batch.getDeviceId());
+        editor.commit();
+    }
+
     public String getBatchName() {
         return sharedPreferences.getString("batchName", null);
     }
@@ -38,5 +50,13 @@ public class SharedPreferenceHelper {
 
     public String getYeastType() {
         return sharedPreferences.getString("yeastType", null);
+    }
+
+    public String getEndDate() {
+        return sharedPreferences.getString("endDate", null);
+    }
+
+    public String getDeviceId() {
+        return sharedPreferences.getString("deviceId", null);
     }
 }
