@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/profile_settings"
-        android:title="Profile Settings"
-        android:icon="@drawable/ic_baseline_account_profile"/>
+        android:icon="@drawable/ic_baseline_account_profile"
+        android:title="Register Device" />
     <item
         android:id="@+id/basics_brewing"
-        android:title="The Basics of Brewing"
-        android:icon="@drawable/plus_button"/>
+        android:icon="@drawable/plus_button"
+        android:title="The Basics of Fermentation" />
     <item
         android:id="@+id/past_brews_activity_logout"
         android:title="Logout"

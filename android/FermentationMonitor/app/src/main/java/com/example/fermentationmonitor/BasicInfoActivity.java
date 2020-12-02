@@ -30,7 +30,7 @@ public class BasicInfoActivity extends AppCompatActivity {
 
 
     private void setupUI() {
-        toolbar = findViewById(R.id.myToolbar);
+        toolbar = findViewById(R.id.include2);
         setSupportActionBar(toolbar);
         toolbar.setTitle("The Basics of Brewing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

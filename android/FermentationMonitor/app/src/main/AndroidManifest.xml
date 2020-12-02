@@ -16,7 +16,7 @@
         <activity
             android:name=".BasicInfoActivity"
             android:parentActivityName=".PastBrewsActivity"
-            android:label="The Basics of Brewing"/>
+            android:label="The Basics of Fermentation"/>
         <activity
             android:name=".DensityGraphActivity"
             android:parentActivityName=".CurrentBrewActivity" />

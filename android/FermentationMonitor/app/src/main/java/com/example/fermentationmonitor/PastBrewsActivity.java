@@ -195,7 +195,6 @@ public class PastBrewsActivity extends AppCompatActivity implements NavigationVi
                         String token = task.getResult();
 
                         Log.d(TAG, token);
-                        Toast.makeText(PastBrewsActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

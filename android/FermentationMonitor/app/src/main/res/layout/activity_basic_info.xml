@@ -7,20 +7,25 @@
     tools:context=".BasicInfoActivity">
 
     <include
-        layout="@layout/appbar"  />
+
+        android:id="@+id/include2"
+        layout="@layout/appbar" />
 
     <TextView
         android:id="@+id/BasicsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="174dp"
-        android:layout_marginEnd="179dp"
         android:layout_marginBottom="30dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="30dp"
         android:scrollbars="vertical"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/SGlinkText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include2"
+        app:layout_constraintVertical_bias="0.688" />
 
     <TextView
         android:id="@+id/SGlinkText"
